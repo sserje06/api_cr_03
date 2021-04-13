@@ -10,14 +10,14 @@ variables:
 - group: build_variables
 
 parameters:
+  - name: buildApi01
+    type: boolean
+    default: False
+    displayName: Build API 01
   - name: buildApi02
     type: boolean
     default: False
     displayName: Build API 02
-  - name: buildApi03
-    type: boolean
-    default: False
-    displayName: Build API 03
 
 stages:
 - stage: Build
