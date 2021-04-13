@@ -51,4 +51,10 @@ stages:
       vmImage: ubuntu-18.04
     steps:
     - checkout: self
-
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          $sourceBranch = "$(Build.SourceBranch)"
+          $result=$sourceBranch.Substring(24 -13)
+          echo "##vso[task.setVariable variable=SOURCEBRANCH_NAME;]$result"
