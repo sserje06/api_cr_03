@@ -70,3 +70,13 @@ stages:
         command: 'build'
         projects: '**/*.csproj'
         feedsToUse: 'select'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'publish'
+        publishWebProjects: true
+        arguments: 'release'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/publish'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
