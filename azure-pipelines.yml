@@ -58,3 +58,15 @@ stages:
           $sourceBranch = "$(Build.SourceBranch)"
           $result=$sourceBranch.Substring(24 -13)
           echo "##vso[task.setVariable variable=SOURCEBRANCH_NAME;]$result"
+    - task: DotNetCoreCLI@2
+      displayName: Restore Nuget Package
+      inputs:
+        command: 'restore'
+        projects: '**/*.csproj'
+        feedsToUse: 'select'
+    - task: DotNetCoreCLI@2
+      displayName: Build Application
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        feedsToUse: 'select'
