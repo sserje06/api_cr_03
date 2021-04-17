@@ -101,6 +101,7 @@ stages:
       env:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     - task: PowerShell@2
+      displayName: Waiting for build pipeline API 02
       inputs:
         targetType: 'inline'
         script: |
