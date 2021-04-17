@@ -83,3 +83,24 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)/publish'
         ArtifactName: 'drop'
         publishLocation: 'Container'
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          $body = "@
+          {
+            "definition":{
+              "id": $id
+            },
+            "sourceBranch": "$(sourceBranch)"
+          }
+          "@
+          
+          $contentType = 'application/json'
+          $url = "https://dev.azure.com/azureDevOpsLaboratory/Azureworshop/_apis/build/builds?api-version=6.1-preview.6"
+          $executeCommand= Invoke-RestMethod -Uri $url -Method POST -Body $body -ContenType $contentType -Headers @{
+            Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"
+          }
+          
+          $getBuildId=$executeCommand.id
+          echo "##vso[task.setVariable variable=BUILD_ID_01;]$getBuildId"
