@@ -10,14 +10,16 @@ variables:
 - group: build_variables
 
 parameters:
-  - name: buildApi01
-    type: boolean
-    default: False
-    displayName: Build API 01
   - name: buildApi02
+    displayName: Build API 02
     type: boolean
     default: False
-    displayName: Build API 02
+  - name: generateRelease
+    displayName: Generate Release Version?
+    default: No
+    values:
+      - Yes
+      - No
 
 stages:
 - stage: Build
@@ -77,6 +79,7 @@ stages:
         ArtifactName: 'drop'
         publishLocation: 'Container'
     - task: PowerShell@2
+      condition: and(succeeded(), eq(variables[environments],'DEV'), eq('${{ parameters.buildApi02 }}', true))
       displayName: Run API 02
       inputs:
         targetType: 'inline'
@@ -101,6 +104,7 @@ stages:
       env:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     - task: PowerShell@2
+      condition: and(succeeded(), eq(variables[environments],'DEV'), eq('${{ parameters.buildApi02 }}', true))
       displayName: Waiting for build pipeline API 02
       inputs:
         targetType: 'inline'
