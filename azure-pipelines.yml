@@ -141,6 +141,7 @@ stages:
             $result=$sourceBranch.Substring(24 -13)
             echo "##vso[task.setVariable variable=SOURCEBRANCH_NAME;]$result"
       - task: PowerShell@2
+        displayName: Update Cross Branch
         inputs:
           targetType: 'inline'
           script: |
@@ -164,6 +165,7 @@ stages:
         env:
           SYSTEM_ACCESSTOKEN: $(System.AccessToken)
       - task: PowerShell@2
+        displayName: Run Build Release Pipiline
         inputs:
           targetType: 'inline'
           script: |
