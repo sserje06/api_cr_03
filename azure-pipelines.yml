@@ -110,3 +110,31 @@ stages:
           echo "##vso[task.setVariable variable=BUILD_ID_01;]$getBuildId"
       env:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          $time_validation = New-TimeSpan -Minutes $(time_validation)
+          $time_secuency = New-TimeSpan -Seconds $(time_secuency)
+          
+          $timeOut=(Get-Date).Add($time_validation)
+          do
+          {
+            $url = https://dev.azure.com/azureDevOpsLaboratory/Azureworshop/_apis/build/builds/$(BUILD_ID_01)?api-version=6.1-preview.6"
+            echo $url
+              $result = Invoke-RestMethod -Uri $url -Headers @{
+                Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"
+              }
+            Write-Host "Waiting for build pipeline complete"
+            Start-Sleep -Seconds time_secuency.Seconds
+          }
+          while (($result.status -ne "completed") -and ((Get-Date) -lt $timeOut))
+          
+          if( ($result.status -eq "completed") -and ($result.result -eq "succeeded") ){
+            break
+          } else {
+            Write-Host "Something is wrong with the build pipeline result"
+            exit 1
+          }
+      env:
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
