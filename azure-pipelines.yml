@@ -104,3 +104,5 @@ stages:
           
           $getBuildId=$executeCommand.id
           echo "##vso[task.setVariable variable=BUILD_ID_01;]$getBuildId"
+      env:
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
