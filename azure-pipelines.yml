@@ -170,14 +170,14 @@ stages:
             $body = "@
             {
               "definition": {
-                "id": $(build_release_id)
+                "id": $(build_release_definition_id)
               },
-              "sourceBranch": $(release_build_pipeline_branch)
+              "sourceBranch": $(build_release_pipeline_branch)
             }
             "@
             $contentType = 'application/json'
             $url = "https://dev.azure.com/azureDevOpsLaboratory/Azureworshop/_apis/distributedtask/variablegroups/$(var_group_id_release_branch)?api-version=6.0-preview.2"
-            $executeCommand= Invoke-RestMethod -Uri $url -Method PUT -Body $body -ContenType $contentType -Headers @{
+            $executeCommand= Invoke-RestMethod -Uri $url -Method POST -Body $body -ContenType $contentType -Headers @{
               Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"
             }
         env:
