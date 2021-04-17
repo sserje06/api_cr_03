@@ -70,6 +70,10 @@ stages:
         command: 'build'
         projects: '**/*.csproj'
         feedsToUse: 'select'
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '3.x'
     - task: DotNetCoreCLI@2
       displayName: Publish Project
       inputs:
